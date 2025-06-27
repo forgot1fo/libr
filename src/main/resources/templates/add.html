@@ -314,8 +314,8 @@
             }
 
             const year = parseInt(yearInput.value);
-            if (year < 1000 || year > currentYear + 5) {
-                alert('Год издания должен быть между 1000 и ' + (currentYear + 5));
+            if (year < 1000 || year > currentYear) {
+                alert('Год издания должен быть между 1000 и ' + (currentYear));
                 e.preventDefault();
                 return;
             }
