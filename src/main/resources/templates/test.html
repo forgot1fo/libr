@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+    fetch('/check-session', {
+      credentials: 'include'
+    }).then(r => r.text()).then(console.log)
+</script>
+</body>
+</html>

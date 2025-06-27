@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой профиль</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-image: url('https://cdna.artstation.com/p/assets/images/images/010/127/468/large/jimena-rodriguez-barcelo-render-main.jpg?1522728767');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+            color: #212529;
+            padding-top: 80px;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.4);
+            z-index: -1;
+        }
+
+        /* Увеличенная шапка */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            height: 80px;
+            padding: 0 5%;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0d6efd !important;
+        }
+
+        .nav-link {
+            font-size: 1.1rem;
+            margin: 0 10px;
+            color: #495057 !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #0d6efd !important;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #0d6efd;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .profile-value {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .edit-btn {
+            color: #0d6efd;
+            cursor: pointer;
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .edit-form.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- Увеличенная шапка -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-book me-2"></i>Библиотека
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/bookloans}">
+                        <i class="bi bi-bookmark-check me-1"></i>Бронь
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/books}">
+                        <i class="bi bi-book me-1"></i>Все книги
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${readerId == 1}">
+                    <a class="nav-link" th:href="@{/readers}">
+                        <i class="bi bi-people me-1"></i>Читатели
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${readerId == 1}">
+                    <a class="nav-link" th:href="@{/authors}">
+                        <i class="bi bi-pencil-square me-1"></i>Авторы
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/profile}">
+                        <i class="bi bi-box-arrow-right me-1"></i>Профиль
+                    </a>
+                </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">
+                        <i class="bi bi-box-arrow-right me-1"></i>Выйти
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-4">
+    <!-- Сообщения об ошибках/успехе -->
+    <div th:if="${not #strings.isEmpty(error)}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${not #strings.isEmpty(success)}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Основная информация -->
+    <div class="edit-section">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4>Основная информация</h4>
+            <button class="btn btn-outline-primary btn-sm btn-edit-section"
+                    onclick="toggleEditForm('info')">
+                <i class="bi bi-pencil"></i> Редактировать
+            </button>
+        </div>
+
+        <div class="profile-details">
+            <!-- Имя -->
+            <div class="profile-item">
+                <span class="profile-label">Имя:</span>
+                <span class="profile-value" id="firstName-value" th:text="${reader.firstName}"></span>
+            </div>
+
+            <!-- Фамилия -->
+            <div class="profile-item">
+                <span class="profile-label">Фамилия:</span>
+                <span class="profile-value" id="lastName-value" th:text="${reader.lastName}"></span>
+            </div>
+
+            <!-- Телефон -->
+            <div class="profile-item">
+                <span class="profile-label">Телефон:</span>
+                <span class="profile-value" id="phone-value" th:text="${reader.phone}"></span>
+            </div>
+        </div>
+
+        <!-- Форма редактирования основной информации -->
+        <div class="edit-form" id="info-form">
+            <form th:action="@{/profile/update-info}" method="post" onsubmit="return validateInfoForm()">
+                <input type="hidden" name="readerId" th:value="${reader.readerId}">
+
+                <div class="mb-3">
+                    <label for="edit-firstName" class="form-label">Имя</label>
+                    <input type="text" class="form-control" id="edit-firstName" name="firstName"
+                           th:value="${reader.firstName}" required
+                           pattern="[A-Za-zА-Яа-яЁё\s]+"
+                           title="Имя не должно содержать цифр и специальных символов">
+                </div>
+
+                <div class="mb-3">
+                    <label for="edit-lastName" class="form-label">Фамилия</label>
+                    <input type="text" class="form-control" id="edit-lastName" name="lastName"
+                           th:value="${reader.lastName}" required
+                           pattern="[A-Za-zА-Яа-яЁё\s]+"
+                           title="Фамилия не должна содержать цифр и специальных символов">
+                </div>
+
+                <div class="mb-3">
+                    <label for="edit-phone" class="form-label">Телефон</label>
+                    <input type="tel" class="form-control" id="edit-phone" name="phone"
+                           th:value="${reader.phone}" required
+                           pattern="\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}"
+                           title="Формат: +7 (XXX) XXX-XX-XX">
+                    <small class="text-muted">Формат: +7 (XXX) XXX-XX-XX</small>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-secondary" onclick="toggleEditForm('info')">Отмена</button>
+                </div>
+            </form>
+        </div>
+
+    <div class="container mt-4">
+    <!-- Сообщения об ошибках -->
+    <div th:if="${not #strings.isEmpty(error)}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Сообщения об успехе -->
+    <div th:if="${not #strings.isEmpty(success)}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="profile-header">
+        <div class="profile-avatar"
+             th:text="${reader.firstName != null ? #strings.substring(reader.firstName, 0, 1) : ''} +
+                      ${reader.lastName != null ? #strings.substring(reader.lastName, 0, 1) : ''}">
+        </div>
+        <h2 th:text="${(reader.firstName != null ? reader.firstName : '') + ' ' +
+                       (reader.lastName != null ? reader.lastName : '')}"></h2>
+    </div>
+
+    <div class="profile-details">
+        <!-- Пароль -->
+        <div class="profile-item">
+            <span class="profile-label">Пароль:</span>
+            <span class="profile-value">********</span>
+            <i class="bi bi-pencil edit-btn" onclick="toggleEditForm('password')"></i>
+        </div>
+
+        <div class="edit-form" id="password-form">
+            <form th:action="@{/profile/update-password}" method="post" onsubmit="return validatePasswordForm()">
+                <input type="hidden" name="readerId" th:value="${reader.readerId}">
+
+                <div class="mb-3">
+                    <label for="currentPassword" class="form-label">Текущий пароль</label>
+                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">Новый пароль</label>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6">
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Подтвердите пароль</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required minlength="6">
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-secondary" onclick="toggleEditForm('password')">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function toggleEditForm(fieldName) {
+        const form = document.getElementById(`${fieldName}-form`);
+        form.classList.toggle('active');
+    }
+
+    function validatePasswordForm() {
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (newPassword !== confirmPassword) {
+            alert('Новый пароль и подтверждение не совпадают');
+            return false;
+        }
+
+        if (newPassword.length < 6) {
+            alert('Пароль должен содержать минимум 6 символов');
+            return false;
+        }
+
+        return true;
+    }
+function validateInfoForm() {
+    const firstName = document.getElementById('edit-firstName').value.trim();
+    const lastName = document.getElementById('edit-lastName').value.trim();
+    const phone = document.getElementById('edit-phone').value;
+    const cleanPhone = phone.replace(/\D/g, '');
+
+    // Проверка имени
+    if (!firstName) {
+        alert('Поле "Имя" обязательно для заполнения');
+        return false;
+    }
+
+    if (/\d/.test(firstName)) {
+        alert('Имя не должно содержать цифры');
+        return false;
+    }
+
+    // Проверка фамилии
+    if (!lastName) {
+        alert('Поле "Фамилия" обязательно для заполнения');
+        return false;
+    }
+
+    if (/\d/.test(lastName)) {
+        alert('Фамилия не должна содержать цифры');
+        return false;
+    }
+
+    // Проверка телефона
+    if (cleanPhone.length !== 11) {
+        alert('Номер телефона должен содержать 11 цифр');
+        return false;
+    }
+
+    // Обновляем значение телефона в форме (удаляем нецифровые символы)
+    document.getElementById('edit-phone').value = cleanPhone;
+
+    return true;
+}
+
+// Маска для телефона (опционально)
+document.getElementById('edit-phone')?.addEventListener('input', function(e) {
+    let value = this.value.replace(/\D/g, '');
+
+    // Форматирование: +7 (XXX) XXX-XX-XX
+    if (value.length > 0) {
+        value = '+7' + value.substring(1);
+    }
+    if (value.length > 2) {
+        value = value.substring(0, 2) + ' (' + value.substring(2);
+    }
+    if (value.length > 7) {
+        value = value.substring(0, 7) + ') ' + value.substring(7);
+    }
+    if (value.length > 12) {
+        value = value.substring(0, 12) + '-' + value.substring(12);
+    }
+    if (value.length > 15) {
+        value = value.substring(0, 15) + '-' + value.substring(15);
+    }
+    if (value.length > 18) {
+        value = value.substring(0, 18);
+    }
+
+    this.value = value;
+})
+    // Автоматическое открытие формы при ошибке
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            toggleEditForm('password');
+        }
+    });
+</script>
+</body>
+</html>

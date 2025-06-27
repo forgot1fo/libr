@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://cdna.artstation.com/p/assets/images/images/010/127/468/large/jimena-rodriguez-barcelo-render-main.jpg?1522728767');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: rgba(255, 255, 255, 0.3);
+            background-blend-mode: overlay;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .centered-form {
+            max-width: 500px;
+            width: 90%;
+            padding: 40px;
+            border-radius: 15px;
+            background-color: rgba(249, 249, 249, 0.95);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: fadeIn 0.8s ease-out;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #333;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            font-size: 1rem;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .btn {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success {
+            background-color: #198754;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #157347;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(25, 135, 84, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5c636a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        .alert {
+            font-size: 0.9rem;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            gap: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .centered-form {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Стили для ошибок валидации */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+<div class="centered-form">
+    <h2><i class="bi bi-person-plus me-2"></i>Регистрация</h2>
+    <form th:action="@{/register}" th:object="${reader}" method="post" id="registrationForm">
+        <!-- Имя -->
+        <div class="mb-3">
+            <label class="form-label">Имя:</label>
+            <input type="text" class="form-control" id="firstName" name="firstName"
+                   th:field="*{firstName}" required
+                   pattern="^[А-ЯЁA-Z][а-яёa-z-]*"
+                   title="Имя должно начинаться с заглавной буквы и содержать только буквы">
+            <div class="invalid-feedback">Имя должно начинаться с заглавной буквы и содержать только буквы</div>
+        </div>
+
+        <!-- Фамилия -->
+        <div class="mb-3">
+            <label class="form-label">Фамилия:</label>
+            <input type="text" class="form-control" id="lastName" name="lastName"
+                   th:field="*{lastName}" required
+                   pattern="^[А-ЯЁA-Z][а-яёa-z-]*"
+                   title="Фамилия должна начинаться с заглавной буквы и содержать только буквы">
+            <div class="invalid-feedback">Фамилия должна начинаться с заглавной буквы и содержать только буквы</div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="email"
+                   th:field="*{email}" required>
+            <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
+        </div>
+
+        <!-- Пароль -->
+        <div class="mb-3">
+            <label class="form-label">Пароль:</label>
+            <input type="password" class="form-control" id="password" name="readerPassword"
+                   th:field="*{readerPassword}" required minlength="6">
+            <div class="invalid-feedback">Пароль должен содержать минимум 6 символов</div>
+        </div>
+
+        <!-- Телефон -->
+        <div class="mb-3">
+            <label class="form-label">Телефон:</label>
+            <input type="tel" class="form-control" id="phone" name="phone"
+                   th:field="*{phone}" required maxlength="11"
+                   pattern="^\d{11}$"
+                   title="Введите 11 цифр номера телефона (например: 91234567890)">
+            <div class="invalid-feedback">Введите 11 цифр номера телефона без пробелов и других символов</div>
+        </div>
+
+        <!-- Сообщения об ошибках -->
+        <div class="alert alert-danger mb-3" th:if="${emailExists}">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Пользователь с таким email уже зарегистрирован.
+        </div>
+
+        <div class="alert alert-danger mb-3" th:if="${databaseError}">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Ошибка при сохранении данных. Пожалуйста, проверьте введённые значения.
+        </div>
+
+        <div class="button-group">
+            <a href="/login" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Отмена
+            </a>
+            <button type="submit" class="btn btn-success" id="registerBtn">
+                <i class="bi bi-person-plus me-2"></i>Зарегистрироваться
+            </button>
+        </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registrationForm');
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const phone = document.getElementById('phone');
+    const registerBtn = document.getElementById('registerBtn');
+
+    // Автоматическая капитализация первой буквы для имени и фамилии
+    [firstName, lastName].forEach(input => {
+        input.addEventListener('input', function() {
+            // Удаляем все цифры и спецсимволы (кроме дефиса)
+            this.value = this.value.replace(/[^А-Яа-яЁёA-Za-z-]/g, '');
+
+            // Капитализация первой буквы
+            if (this.value.length === 1) {
+                this.value = this.value.toUpperCase();
+            }
+        });
+
+        // Корректировка при потере фокуса
+        input.addEventListener('blur', function() {
+            if (this.value.length > 0) {
+                this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1).toLowerCase();
+            }
+            validateField(this);
+        });
+    });
+
+    // Обработчик ввода для телефона - только цифры
+    // Обработчик ввода для телефона - только цифры и не более 11 символов
+    phone.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, ''); // Удаляем все нецифровые символы
+        if (this.value.length > 11) {
+            this.value = this.value.substring(0, 11); // Ограничиваем длину 11 цифрами
+        }
+    });
+
+    // Валидация телефона при потере фокуса
+    phone.addEventListener('blur', function() {
+        if (this.value.length !== 11) {
+            this.classList.add('is-invalid');
+            const feedback = this.nextElementSibling;
+            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                feedback.textContent = 'Номер телефона должен содержать ровно 11 цифр';
+            }
+        } else {
+            this.classList.remove('is-invalid');
+        }
+    });
+
+    // Валидация email при потере фокуса
+    email.addEventListener('blur', function() {
+        validateField(this);
+    });
+
+    // Валидация пароля при потере фокуса
+    password.addEventListener('blur', function() {
+        validateField(this);
+    });
+
+    // Обработчик отправки формы
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Валидация всех полей
+        const fields = [firstName, lastName, email, password, phone];
+        let isValid = true;
+
+        fields.forEach(field => {
+            if (!validateField(field)) {
+                isValid = false;
+            }
+        });
+
+        // Специальная проверка для телефона
+         phone.classList.add('is-invalid');
+            alert('Номер телефона должен содержать ровно 11 цифр');
+            phone.focus()
+
+        if (isValid) {
+            // Если все поля валидны, отправляем форму
+            this.submit();
+        } else {
+            // Показываем общее сообщение об ошибке
+            alert('Пожалуйста, заполните все поля корректно');
+
+            // Прокручиваем к первому невалидному полю
+            const firstInvalid = form.querySelector('.is-invalid');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+
+    // Функция валидации отдельного поля
+    function validateField(field) {
+        let isValid = true;
+        let errorMessage = '';
+
+        if (field === firstName || field === lastName) {
+            isValid = field.value.match(/^[А-ЯЁA-Z][а-яёa-z-]*$/);
+            errorMessage = 'Должно начинаться с заглавной буквы и содержать только буквы';
+        }
+        else if (field === email) {
+            isValid = field.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+            errorMessage = 'Введите корректный email';
+        }
+        else if (field === password) {
+            isValid = field.value.length >= 6;
+            errorMessage = 'Пароль должен содержать минимум 6 символов';
+        }
+
+        // Обновляем состояние поля
+        if (!isValid && field.value) {
+            field.classList.add('is-invalid');
+            const feedback = field.nextElementSibling;
+            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                feedback.textContent = errorMessage;
+            }
+            return false;
+        } else if (field.value) {
+            field.classList.remove('is-invalid');
+            return true;
+        } else {
+            // Пустое поле
+            field.classList.add('is-invalid');
+            const feedback = field.nextElementSibling;
+            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                feedback.textContent = 'Это поле обязательно для заполнения';
+            }
+            return false;
+        }
+    }
+});
+</script>
+</body>
+</html>

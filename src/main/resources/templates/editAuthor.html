@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать автора</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        /* Основные стили */
+        body {
+            background-image: url('https://cdna.artstation.com/p/assets/images/images/010/127/468/large/jimena-rodriguez-barcelo-render-main.jpg?1522728767');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+            color: #212529;
+            padding-top: 80px;
+        }
+
+        /* Осветление фона */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.4);
+            z-index: -1;
+        }
+
+        /* Увеличенная шапка */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            height: 80px;
+            padding: 0 5%;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0d6efd !important;
+        }
+
+        .nav-link {
+            font-size: 1.1rem;
+            margin: 0 10px;
+            color: #495057 !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #0d6efd !important;
+        }
+
+        /* Основной контейнер */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Стили формы */
+        h1 {
+            color: #0d6efd;
+            margin-bottom: 30px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #0d6efd;
+            border-radius: 2px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            background-color: white;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5c636a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        /* Обязательные поля */
+        .required-field::after {
+            content: ' *';
+            color: #dc3545;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .navbar {
+                height: auto;
+                padding: 10px;
+            }
+
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Увеличенная шапка -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-book me-2"></i>Библиотека
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/bookloans}">
+                        <i class="bi bi-bookmark-check me-1"></i>Бронь
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/books}">
+                        <i class="bi bi-book me-1"></i>Все книги
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${readerId == 1}">
+                    <a class="nav-link" th:href="@{/readers}">
+                        <i class="bi bi-people me-1"></i>Читатели
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${readerId == 1}">
+                    <a class="nav-link active" th:href="@{/authors}">
+                        <i class="bi bi-pencil-square me-1"></i>Авторы
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/profile}">
+                        <i class="bi bi-box-arrow-right me-1"></i>Профиль
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">
+                        <i class="bi bi-box-arrow-right me-1"></i>Выйти
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-4">
+    <h1><i class="bi bi-pencil-square me-2"></i>Редактировать автора</h1>
+
+    <form th:action="@{/authors/updateAuthor/{id}(id=${author.authorId})}" method="post" id="authorForm">
+        <input type="hidden" name="authorId" th:value="${author.authorId}">
+
+        <!-- Имя -->
+        <div class="mb-4">
+            <label for="firstName" class="form-label required-field">Имя</label>
+            <input type="text" class="form-control" id="firstName"
+                   name="firstName"
+                   th:value="${author.firstName}"
+                   pattern="^[А-ЯЁA-Z][а-яёa-z-]*"
+                   title="Имя должно начинаться с заглавной буквы и содержать только буквы"
+                   required>
+            <div class="invalid-feedback">Имя должно начинаться с заглавной буквы и содержать только буквы</div>
+        </div>
+
+        <!-- Фамилия -->
+        <div class="mb-4">
+            <label for="lastName" class="form-label required-field">Фамилия</label>
+            <input type="text" class="form-control" id="lastName"
+                   name="lastName"
+                   th:value="${author.lastName}"
+                   pattern="^[А-ЯЁA-Z][а-яёa-z-]*"
+                   title="Фамилия должна начинаться с заглавной буквы и содержать только буквы"
+                   required>
+            <div class="invalid-feedback">Фамилия должна начинаться с заглавной буквы и содержать только буквы</div>
+        </div>
+
+        <!-- Отчество -->
+        <div class="mb-4">
+            <label for="middleName" class="form-label required-field">Отчество</label>
+            <input type="text" class="form-control" id="middleName"
+                   name="middleName"
+                   th:value="${author.middleName}"
+                   pattern="^[А-ЯЁA-Z][а-яёa-z-]*"
+                   title="Отчество должно начинаться с заглавной буквы и содержать только буквы"
+                   required>
+            <div class="invalid-feedback">Отчество должно начинаться с заглавной буквы и содержать только буквы</div>
+        </div>
+
+        <!-- Дата рождения -->
+        <div class="mb-4">
+            <label for="birthday" class="form-label required-field">Дата рождения</label>
+            <input type="date" class="form-control" id="birthday"
+                   name="birthday"
+                   th:value="${#temporals.format(author.birthday, 'yyyy-MM-dd')}"
+                   required>
+        </div>
+
+        <!-- Страна -->
+        <div class="mb-4">
+            <label for="country" class="form-label required-field">Страна</label>
+            <input type="text" class="form-control" id="country"
+                   name="country"
+                   th:value="${author.country}"
+                   pattern="^[А-ЯЁA-Z][а-яёa-z\\s-]*"
+                   title="Название страны должно начинаться с заглавной буквы и содержать только буквы"
+                   required>
+            <div class="invalid-feedback">Название страны должно начинаться с заглавной буквы и содержать только буквы</div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-5">
+            <a th:href="@{/authors}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Отмена
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save me-1"></i> Обновить
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('authorForm');
+        const fields = ['firstName', 'lastName', 'middleName', 'country'];
+
+        // Автоматическая капитализация первых букв и запрет цифр/спецсимволов
+        fields.forEach(id => {
+            const input = document.getElementById(id);
+
+            input.addEventListener('input', function(e) {
+                // Удаляем все цифры и спецсимволы (кроме дефиса и пробелов для страны)
+                if (id === 'country') {
+                    this.value = this.value.replace(/[^А-Яа-яЁёA-Za-z\s-]/g, '');
+                } else {
+                    this.value = this.value.replace(/[^А-Яа-яЁёA-Za-z-]/g, '');
+                }
+
+                // Капитализация первой буквы
+                if (this.value.length === 1) {
+                    this.value = this.value.toUpperCase();
+                }
+            });
+
+            // Проверка при потере фокуса
+            input.addEventListener('blur', function() {
+                if (this.value.length > 0) {
+                    // Убеждаемся, что первая буква заглавная
+                    this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1).toLowerCase();
+                }
+            });
+        });
+
+        // Валидация формы
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            fields.forEach(id => {
+                const input = document.getElementById(id);
+                const pattern = new RegExp(input.getAttribute('pattern'));
+
+                if (!pattern.test(input.value)) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+        });
+    });
+</script>
+</body>
+</html>
