@@ -5,118 +5,6 @@
     <title>Мой профиль</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <style>
-        body {
-            background-image: url('https://cdna.artstation.com/p/assets/images/images/010/127/468/large/jimena-rodriguez-barcelo-render-main.jpg?1522728767');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            min-height: 100vh;
-            color: #212529;
-            padding-top: 80px;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.4);
-            z-index: -1;
-        }
-
-        /* Увеличенная шапка */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1030;
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            height: 80px;
-            padding: 0 5%;
-        }
-
-        .navbar-brand {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #0d6efd !important;
-        }
-
-        .nav-link {
-            font-size: 1.1rem;
-            margin: 0 10px;
-            color: #495057 !important;
-            font-weight: 500;
-        }
-
-        .nav-link:hover {
-            color: #0d6efd !important;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #0d6efd;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            color: white;
-        }
-
-        .profile-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .profile-label {
-            font-weight: 500;
-            color: #495057;
-        }
-
-        .profile-value {
-            flex-grow: 1;
-            margin: 0 20px;
-        }
-
-        .edit-btn {
-            color: #0d6efd;
-            cursor: pointer;
-        }
-
-        .edit-form {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .edit-form.active {
-            display: block;
-        }
-    </style>
 </head>
 <body>
 
@@ -403,5 +291,117 @@ document.getElementById('edit-phone')?.addEventListener('input', function(e) {
         }
     });
 </script>
+        <style>
+            body {
+                background-image: url('https://cdna.artstation.com/p/assets/images/images/010/127/468/large/jimena-rodriguez-barcelo-render-main.jpg?1522728767');
+                background-size: cover;
+                background-attachment: fixed;
+                background-position: center;
+                min-height: 100vh;
+                color: #212529;
+                padding-top: 80px;
+            }
+
+            body::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.4);
+                z-index: -1;
+            }
+
+            /* Увеличенная шапка */
+            .navbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1030;
+                background: rgba(255, 255, 255, 0.95) !important;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+                height: 80px;
+                padding: 0 5%;
+            }
+
+            .navbar-brand {
+                font-size: 1.8rem;
+                font-weight: 600;
+                color: #0d6efd !important;
+            }
+
+            .nav-link {
+                font-size: 1.1rem;
+                margin: 0 10px;
+                color: #495057 !important;
+                font-weight: 500;
+            }
+
+            .nav-link:hover {
+                color: #0d6efd !important;
+            }
+
+            .container {
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 15px;
+                padding: 30px;
+                margin-bottom: 30px;
+                box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .profile-header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background-color: #0d6efd;
+                margin: 0 auto 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 40px;
+                color: white;
+            }
+
+            .profile-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 0;
+                border-bottom: 1px solid #eee;
+            }
+
+            .profile-label {
+                font-weight: 500;
+                color: #495057;
+            }
+
+            .profile-value {
+                flex-grow: 1;
+                margin: 0 20px;
+            }
+
+            .edit-btn {
+                color: #0d6efd;
+                cursor: pointer;
+            }
+
+            .edit-form {
+                display: none;
+                margin-top: 10px;
+            }
+
+            .edit-form.active {
+                display: block;
+            }
+        </style>
 </body>
 </html>

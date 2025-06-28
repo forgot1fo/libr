@@ -5,273 +5,6 @@
     <title>Список книг</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <style>
-        /* Основные стили */
-        body {
-            background-image: url('https://cdna.artstation.com/p/assets/images/images/010/127/468/large/jimena-rodriguez-barcelo-render-main.jpg?1522728767');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            min-height: 100vh;
-            color: #212529;
-            padding-top: 80px;
-        }
-
-        /* Осветление фона */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.4);
-            z-index: -1;
-        }
-
-        /* Увеличенная шапка */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1030;
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            height: 80px;
-            padding: 0 5%;
-        }
-
-        .navbar-brand {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #0d6efd !important;
-        }
-
-        .nav-link {
-            font-size: 1.1rem;
-            margin: 0 10px;
-            color: #495057 !important;
-            font-weight: 500;
-        }
-
-        .nav-link:hover {
-            color: #0d6efd !important;
-        }
-
-        /* Основной контейнер */
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        /* Анимация появления */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Стили таблицы */
-        .table {
-            color: #212529;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .table thead th {
-            background: rgba(13, 110, 253, 0.8);
-            color: white;
-            border-bottom: none;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.95rem;
-            padding: 15px;
-        }
-
-        .table tbody tr {
-            transition: all 0.3s ease;
-        }
-
-        .table tbody tr:hover {
-            background: rgba(13, 110, 253, 0.1);
-        }
-
-        .table tbody td {
-            border-top: 1px solid rgba(0, 0, 0, 0.03);
-            vertical-align: middle;
-            padding: 12px 15px;
-        }
-
-        /* Чекбоксы для бронирования */
-        .book-checkbox {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        /* Кнопки */
-        .btn {
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background-color: #0d6efd;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #0b5ed7;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
-        }
-
-        .btn-success {
-            background-color: #198754;
-            border: none;
-        }
-
-        .btn-warning {
-            background-color: #ffc107;
-            border: none;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border: none;
-        }
-
-        /* Уведомления */
-        .success-toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Заголовок */
-        h1 {
-            color: #0d6efd;
-            margin-bottom: 30px;
-            font-weight: 600;
-            position: relative;
-            padding-bottom: 15px;
-        }
-
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: #0d6efd;
-            border-radius: 2px;
-        }
-
-        /* Кнопка прокрутки вверх */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(13, 110, 253, 0.8);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .scroll-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-to-top:hover {
-            transform: scale(1.1);
-        }
-
-        /* Иконки статуса */
-        .text-success {
-            color: #198754 !important;
-        }
-
-        .text-danger {
-            color: #dc3545 !important;
-        }
-.header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .search-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .search-form {
-            display: flex;
-            min-width: 300px;
-        }
-
-        .search-form .form-control {
-            border-radius: 8px 0 0 8px !important;
-        }
-
-        .search-form .btn {
-            border-radius: 0 8px 8px 0;
-        }
-
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-
-            .search-container {
-                width: 100%;
-            }
-
-            .search-form {
-                flex-grow: 1;
-            }
-        }
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
-            .navbar {
-                height: auto;
-                padding: 10px;
-            }
-
-            .navbar-brand {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -503,5 +236,272 @@
         });
     }
 </script>
+<style>
+    /* Основные стили */
+    body {
+        background-image: url('https://cdna.artstation.com/p/assets/images/images/010/127/468/large/jimena-rodriguez-barcelo-render-main.jpg?1522728767');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        min-height: 100vh;
+        color: #212529;
+        padding-top: 80px;
+    }
+
+    /* Осветление фона */
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.4);
+        z-index: -1;
+    }
+
+    /* Увеличенная шапка */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1030;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        height: 80px;
+        padding: 0 5%;
+    }
+
+    .navbar-brand {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #0d6efd !important;
+    }
+
+    .nav-link {
+        font-size: 1.1rem;
+        margin: 0 10px;
+        color: #495057 !important;
+        font-weight: 500;
+    }
+
+    .nav-link:hover {
+        color: #0d6efd !important;
+    }
+
+    /* Основной контейнер */
+    .container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* Анимация появления */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Стили таблицы */
+    .table {
+        color: #212529;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .table thead th {
+        background: rgba(13, 110, 253, 0.8);
+        color: white;
+        border-bottom: none;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.95rem;
+        padding: 15px;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        background: rgba(13, 110, 253, 0.1);
+    }
+
+    .table tbody td {
+        border-top: 1px solid rgba(0, 0, 0, 0.03);
+        vertical-align: middle;
+        padding: 12px 15px;
+    }
+
+    /* Чекбоксы для бронирования */
+    .book-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    /* Кнопки */
+    .btn {
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-success {
+        background-color: #198754;
+        border: none;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    /* Уведомления */
+    .success-toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Заголовок */
+    h1 {
+        color: #0d6efd;
+        margin-bottom: 30px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: #0d6efd;
+        border-radius: 2px;
+    }
+
+    /* Кнопка прокрутки вверх */
+    .scroll-to-top {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(13, 110, 253, 0.8);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+    .scroll-to-top.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .scroll-to-top:hover {
+        transform: scale(1.1);
+    }
+
+    /* Иконки статуса */
+    .text-success {
+        color: #198754 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+.header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .search-form {
+        display: flex;
+        min-width: 300px;
+    }
+
+    .search-form .form-control {
+        border-radius: 8px 0 0 8px !important;
+    }
+
+    .search-form .btn {
+        border-radius: 0 8px 8px 0;
+    }
+
+    @media (max-width: 768px) {
+        .header-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .search-container {
+            width: 100%;
+        }
+
+        .search-form {
+            flex-grow: 1;
+        }
+    }
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+
+        .navbar {
+            height: auto;
+            padding: 10px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+    }
+</style>
 </body>
 </html>
